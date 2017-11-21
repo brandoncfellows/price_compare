@@ -134,7 +134,7 @@ end
 def list 
 
 require "open-uri"  
-page=rand(1..25)
+page= rand(1..25)
 a=open("https://www.walmart.com/browse/0/0?cat_id=0&facet=special_offers%3AClearance&page=#{page}#searchProductResult").read
 b=a.split("\"upc\":\"")
 
@@ -144,8 +144,8 @@ b.each do |var|
   c=var.split("\"")
   array.push(c[0])
 end
-start = rand(1..30)
-finish = start+10
+start = rand(1..(array.count-20))
+finish = start+20
 array = array[start..finish]
 
 array2=[]
@@ -225,41 +225,41 @@ array.each do |num|
       amazon_data = Hash.from_xml(xml)
 
       if amazon_data["ItemLookupResponse"]["Items"]["Request"].key?("Errors")
-        array2[i][:image] = "Item Not Available on Amazon"
-        array2[i][:title] = "Item Not Available on Amazon"
-        array2[i][:amazon_price] = "Item Not Available on Amazon"
-
+        array2.delete_at(i)
+        i=i-1
       else
 
-      amazon_price_array=[]  
+        amazon_price_array=[]  
 
-      if amazon_data["ItemLookupResponse"]["Items"]["Item"].is_a?(Array)
-        amazon_data["ItemLookupResponse"]["Items"]["Item"].each do |item|
-          if item["ItemAttributes"]["ListPrice"].is_a?(Hash)
-            amazon_price_array.push(item["ItemAttributes"]["ListPrice"]["Amount"].to_f)
-          else
-            if item["OfferSummary"]["TotalNew"].to_i >0
-              amazon_price_array.push(item["OfferSummary"]["LowestNewPrice"]["Amount"].to_f)
-            end
-          end 
-        end
-        amazon_best = amazon_price_array.each_with_index.min
-        array2[i][:title] = amazon_data["ItemLookupResponse"]["Items"]["Item"][amazon_best[1]]["ItemAttributes"]["Title"]
-        array2[i][:amazon_price] = amazon_best[0]/100
-      else
-        array2[i][:title] = amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["Title"]
-      if amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"].is_a?(Hash)
-        array2[i][:amazon_price] = amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"]["Amount"].to_f/100
-      else 
-        if amazon_data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["TotalNew"].to_i > 0
-          array2[i][:amazon_price] = amazon_data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["LowestNewPrice"]["Amount"].to_f/100
+        if amazon_data["ItemLookupResponse"]["Items"]["Item"].is_a?(Array)
+          amazon_data["ItemLookupResponse"]["Items"]["Item"].each do |item|
+            if item["ItemAttributes"]["ListPrice"].is_a?(Hash)
+              amazon_price_array.push(item["ItemAttributes"]["ListPrice"]["Amount"].to_f)
+            else
+              if item["OfferSummary"]["TotalNew"].to_i >0
+                amazon_price_array.push(item["OfferSummary"]["LowestNewPrice"]["Amount"].to_f)
+              end
+            end 
+          end
+          amazon_best = amazon_price_array.each_with_index.min
+          array2[i][:title] = amazon_data["ItemLookupResponse"]["Items"]["Item"][amazon_best[1]]["ItemAttributes"]["Title"]
+          array2[i][:amazon_price] = amazon_best[0]/100
         else
-          array2[i][:amazon_price] = "No Price Available"
-        end 
-      end
-      end
+          array2[i][:title] = amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["Title"]
+          if amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"].is_a?(Hash)
+            array2[i][:amazon_price] = amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"]["Amount"].to_f/100
+          else 
+            if amazon_data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["TotalNew"].to_i > 0
+              array2[i][:amazon_price] = amazon_data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["LowestNewPrice"]["Amount"].to_f/100
+            else
+              array2.delete_at(i)
+              i=i-1
+            end 
+          end
+        end
       end
       i=i+1
+      break if i==10
     end
   end
 end  

@@ -56,7 +56,7 @@ request_url = "http://#{endpoint}#{request_uri}?#{canonical_query_string}&Signat
 
 
 xml = open(request_url).read # if your xml is in the 'data.xml' file
-@data = Hash.from_xml(xml)["ItemLookupResponse"]["Items"]["Item"][1]["ItemAttributes"]
+@data = Hash.from_xml(xml)["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]
 
 =begin
 
