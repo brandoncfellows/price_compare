@@ -13,7 +13,6 @@ require 'uri'
 require 'openssl'
 require 'base64'
 require 'open-uri'
-require 'httparty'
 require 'nokogiri'
 require 'ostruct'
 
@@ -181,7 +180,6 @@ array.each do |num|
       require 'openssl'
       require 'base64'
       require 'open-uri'
-      require 'httparty'
       require 'nokogiri'
       require 'ostruct'
 
@@ -233,11 +231,11 @@ array.each do |num|
 
         if amazon_data["ItemLookupResponse"]["Items"]["Item"].is_a?(Array)
           amazon_data["ItemLookupResponse"]["Items"]["Item"].each do |item|
-            if item["ItemAttributes"]["ListPrice"].is_a?(Hash)
-              amazon_price_array.push(item["ItemAttributes"]["ListPrice"]["Amount"].to_f)
+            if item["OfferSummary"]["TotalNew"].to_i >0
+              amazon_price_array.push(item["OfferSummary"]["LowestNewPrice"]["Amount"].to_f)
             else
-              if item["OfferSummary"]["TotalNew"].to_i >0
-                amazon_price_array.push(item["OfferSummary"]["LowestNewPrice"]["Amount"].to_f)
+              if item["ItemAttributes"]["ListPrice"].is_a?(Hash)
+                amazon_price_array.push(item["ItemAttributes"]["ListPrice"]["Amount"].to_f)
               end
             end 
           end
@@ -246,11 +244,11 @@ array.each do |num|
           array2[i][:amazon_price] = amazon_best[0]/100
         else
           array2[i][:title] = amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["Title"]
-          if amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"].is_a?(Hash)
-            array2[i][:amazon_price] = amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"]["Amount"].to_f/100
-          else 
-            if amazon_data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["TotalNew"].to_i > 0
+          if amazon_data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["TotalNew"].to_i > 0
               array2[i][:amazon_price] = amazon_data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["LowestNewPrice"]["Amount"].to_f/100
+          else 
+            if amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"].is_a?(Hash)
+              array2[i][:amazon_price] = amazon_data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"]["Amount"].to_f/100
             else
               array2.delete_at(i)
               i=i-1

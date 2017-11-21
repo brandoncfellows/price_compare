@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  devise_for :users
+
 get "/walmart", :controller => "walmart", :action => "view"
 get "/search", :controller => "walmart", :action => "search"
 
