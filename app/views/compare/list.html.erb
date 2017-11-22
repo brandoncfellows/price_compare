@@ -16,7 +16,24 @@
   <%@array3.each do |entry|%>
   <tr>
       <td><img src=<%=entry[:image]%> width=200px></td>
-      <td><%=entry[:title]%></td>
+      <td>
+        <%=entry[:title]%>
+      <div class="row">
+        <div class="col-md-12">
+          <form action="/create_bookmark" method="post">
+             <!-- Hidden input for authenticity token to protect from forgery -->
+             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+        
+             <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
+     
+             <input type="hidden" id="upc" name="upc" placeholder="Upc" class="form-control" value="<%= entry[:upc] %>">
+             <button class="btn btn-success">
+               Add to Watch List
+             </button>
+           </form>
+          </div>
+        </div>
+      </td>
       <td><%=entry[:discount]%>%</td>      
       <td><%=number_to_currency(entry[:walmart_price])%></td>
       <td><%=number_to_currency(entry[:amazon_price])%></td>

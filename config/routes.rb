@@ -1,16 +1,34 @@
 Rails.application.routes.draw do
 
+  # Routes for the Bookmark resource:
+  # CREATE
+  get "/bookmarks/new", :controller => "bookmarks", :action => "new"
+  post "/create_bookmark", :controller => "bookmarks", :action => "create"
+
+  # READ
+  get "/bookmarks", :controller => "bookmarks", :action => "index"
+  get "/bookmarks/:id", :controller => "bookmarks", :action => "show"
+
+  # UPDATE
+  get "/bookmarks/:id/edit", :controller => "bookmarks", :action => "edit"
+  post "/update_bookmark/:id", :controller => "bookmarks", :action => "update"
+
+  # DELETE
+  get "/delete_bookmark/:id", :controller => "bookmarks", :action => "destroy"
+  #------------------------------
+
   devise_for :users
 
 get "/walmart", :controller => "walmart", :action => "view"
 get "/search", :controller => "walmart", :action => "search"
 
-get "/amazon", :controller => "amazon", :action => "view"
+get "/amazon/:id", :controller => "amazon", :action => "view"
 get "/asearch", :controller => "amazon", :action => "search"
 
 get "/compare", :controller => "compare", :action => "view"
 get "/find", :controller => "compare", :action => "search"
 get "/list", :controller => "compare", :action =>"list"
 
+root "compare#list"
 
 end

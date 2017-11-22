@@ -143,8 +143,8 @@ b.each do |var|
   c=var.split("\"")
   array.push(c[0])
 end
-start = rand(1..(array.count-20))
-finish = start+20
+start = rand(1..(array.count-15))
+finish = start+15
 array = array[start..finish]
 
 array2=[]
@@ -257,7 +257,7 @@ array.each do |num|
         end
       end
       i=i+1
-      break if i==10
+      break if i==5
     end
   end
 end  

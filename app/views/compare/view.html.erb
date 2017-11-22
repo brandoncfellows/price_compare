@@ -1,3 +1,7 @@
+<br>
+<br>
+<br>
+<br>
 <p>Name: <%=@title%></p>
 <p>UPC: <%=@upc%></p>
 <p>Amazon Price: <%=@amazon_price%></p>
@@ -5,3 +9,19 @@
 <p>Difference: <%=@difference%></p>
 <p>Fees with FBA: <%=@fees %></p>
 <img src=<%=@image%>>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/create_bookmark" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+        
+        <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
+     
+        <input type="hidden" id="upc" name="upc" placeholder="Upc" class="form-control" value="<%= @upc %>">
+      <button class="btn btn-success">
+        Add to Watch List
+      </button>
+    </form>
+  </div>
+</div>
