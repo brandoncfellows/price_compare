@@ -2,11 +2,28 @@
 <br>
 <br>
 <br>
-<form action="/compare">
-  <div>
-    <label for="id">UPC</label>
-    <input type="text" name="id" id="id">
-  </div>
+<div class="container">
+<div class="row">
+  <div class="col-md-12">
+    <form action="/compare">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
-  <button>Search</button>
-</form>
+      <!-- Label and input for user_id -->
+      <div class="form-group">
+        <label for="id" class="control-label">
+          Search: 
+        </label>
+
+        <input type="text" id="id" name="id" placeholder="Search Terms" class="form-control">
+      </div>
+
+      <button class="btn btn-primary">
+        Search
+      </button>
+
+    </form>
+  </div>
+</div>
+
+</div>

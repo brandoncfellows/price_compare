@@ -27,7 +27,7 @@ get "/asearch", :controller => "amazon", :action => "search"
 
 get "/compare", :controller => "compare", :action => "view"
 get "/find", :controller => "compare", :action => "search"
-get "/list", :controller => "compare", :action =>"list"
+get "/list/:id", :controller => "compare", :action =>"list"
 
 root "compare#list"
 

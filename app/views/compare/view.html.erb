@@ -1,27 +1,56 @@
 <br>
 <br>
 <br>
-<br>
-<p>Name: <%=@title%></p>
-<p>UPC: <%=@upc%></p>
-<p>Amazon Price: <%=@amazon_price%></p>
-<p>Walmart Price: <%=@walmart_price%></p>
-<p>Difference: <%=@difference%></p>
-<p>Fees with FBA: <%=@fees %></p>
-<img src=<%=@image%>>
-
+<div class="container">
 <div class="row">
-  <div class="col-md-12">
-    <form action="/create_bookmark" method="post">
-      <!-- Hidden input for authenticity token to protect from forgery -->
-      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-        
-        <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
-     
-        <input type="hidden" id="upc" name="upc" placeholder="Upc" class="form-control" value="<%= @upc %>">
-      <button class="btn btn-success">
-        Add to Watch List
-      </button>
-    </form>
-  </div>
+  <div class="col-md-12" >
+    <table class="table table-striped" >
+  <tr>
+    <th>Image</th>
+    <th width=400px>Product</th>
+    <th>Discount</th>    
+    <th>Walmart Price</th>
+    <th>Amazon Price</th>
+  </tr>
+  <%@walmart_array.each do |entry|%>
+  <tr>
+      <td><img src=<%=entry[:image]%> width=200px></td>
+      <td>
+        <%=entry[:name]%>
+      <div class="row">
+        <div class="col-md-12">
+          <form action="/create_bookmark" method="post">
+             <!-- Hidden input for authenticity token to protect from forgery -->
+             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+             <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
+             <input type="hidden" id="upc" name="upc" placeholder="Upc" class="form-control" value="<%= entry[:upc] %>">
+             <input type="hidden" id="image" name="image" placeholder="Image URL" class="form-control" value="<%= entry[:image] %>">
+             <input type="hidden" id="name" name="name" placeholder="Name" class="form-control" value="<%= entry[:name] %>">
+             <input type="hidden" id="walmart_price" name="walmart_price" placeholder="Walmart Price" class="form-control" value="<%= entry[:walmart_price] %>">
+             <input type="hidden" id="amazon_price" name="amazon_price" placeholder="Amazon Price" class="form-control" value="<%= entry[:amazon_price] %>">
+             <input type="hidden" id="add_to_cart" name="add_to_cart" placeholder="Add To Cart" class="form-control" value="<%= entry[:add_to_cart] %>">
+             <button class="btn btn-primary btn-sm">
+               Add to Watch List
+             </button>
+           </form>
+          </div>
+        </div>
+      </td>
+      <td>
+        <%= number_to_percentage(entry[:discount], precision:0) %>
+      </td>      
+      <td>
+        <%=number_to_currency(entry[:walmart_price])%>   <a href=<%=entry[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+        <p><a type="button" class="btn btn-primary btn-sm" href="<%=entry[:add_to_cart]%>" target="_blank">
+               <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
+        </a></p>
+      </td>
+      <td>
+        <%=number_to_currency(entry[:amazon_price])%>   <a href=<%=entry[:amazon_url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+      </td>
+  </tr>
+<%end%>
+</table>
+</div>
+</div>
 </div>

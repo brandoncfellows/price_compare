@@ -1,6 +1,25 @@
 class BookmarksController < ApplicationController
   def index
-    @bookmarks = Bookmark.all
+
+  @bookmarks=current_user.bookmarks
+=begin    
+    walmart_array=[]
+    current_user.bookmarks.pluck(:upc).each do |upc|
+      walmart_array.push(WalmartHelper.info(upc))
+    end
+    
+    walmart_array.each do |item|
+    amazon=AmazonHelper.info(item[:upc])
+    item[:amazon_price]=amazon[:price]
+    item[:amazon_url]=amazon[:url]
+    if item[:amazon_price].class==String 
+      item[:discount]=0
+    else
+      item[:discount]=(item[:amazon_price]-item[:price])/item[:amazon_price]*100
+    end 
+  end
+=end
+
 
     render("bookmarks/index.html.erb")
   end
@@ -22,13 +41,18 @@ class BookmarksController < ApplicationController
 
     @bookmark.user_id = params[:user_id]
     @bookmark.upc = params[:upc]
+    @bookmark.image = params[:image]
+    @bookmark.name = params[:name]
+    @bookmark.amazon_price = params[:amazon_price]
+    @bookmark.walmart_price = params[:walmart_price]
+    @bookmark.add_to_cart = params[:add_to_cart]
 
     save_status = @bookmark.save
 
     if save_status == true
-      redirect_to("/bookmarks/#{@bookmark.id}", :notice => "Bookmark created successfully.")
+      redirect_to("/bookmarks", :notice => "Bookmark created successfully.")
     else
-      render("bookmarks/new.html.erb")
+      render("bookmarks/index.html.erb")
     end
   end
 
@@ -58,10 +82,8 @@ class BookmarksController < ApplicationController
 
     @bookmark.destroy
 
-    if URI(request.referer).path == "/bookmarks/#{@bookmark.id}"
-      redirect_to("/", :notice => "Bookmark deleted.")
-    else
-      redirect_back(:fallback_location => "/", :notice => "Bookmark deleted.")
-    end
+
+    redirect_to("/bookmarks", :notice => "Bookmark deleted.")
+
   end
 end
