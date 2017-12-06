@@ -14,12 +14,17 @@ def view
     item[:amazon_price]=amazon[:amazon_price]
     item[:amazon_url]=amazon[:url]
     if item[:amazon_price].class==String 
-      item[:discount]=0
+      item[:discount]=-1000
     else
       item[:discount]=(item[:amazon_price]-item[:walmart_price])/item[:amazon_price]*100
     end 
   end
   @walmart_array=walmart_array.sort_by { |v| v[:discount] }.reverse
+  @walmart_array.each do |item|
+    if item[:discount]==-1000
+      item[:discount]="Not Available"
+    end
+  end
   render("compare/view.html.erb")
 end
 
@@ -40,13 +45,17 @@ walmart_array = WalmartHelper.clearance(@id)
     item[:amazon_price]=amazon[:amazon_price]
     item[:amazon_url]=amazon[:url]
     if item[:amazon_price].class==String 
-      item[:discount]=0
+      item[:discount]= -1000
     else
       item[:discount]=(item[:amazon_price]-item[:walmart_price])/item[:amazon_price]*100
     end 
   end
   @array3=walmart_array.sort_by { |v| v[:discount] }.reverse
-
+  @array3.each do |item|
+    if item[:discount]==-1000
+      item[:discount]="Not Available"
+    end
+  end
 
 =begin
 

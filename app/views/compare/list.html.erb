@@ -37,16 +37,32 @@
         </div>
       </td>
       <td>
-        <%= number_to_percentage(entry[:discount], precision:0) %>
+        <%= 
+          if entry[:discount].class==Float 
+            number_to_percentage(entry[:discount], precision:0) 
+          else 
+            entry[:discount]
+          end
+        %>
       </td>      
       <td>
-        <%=number_to_currency(entry[:walmart_price])%>   <a href=<%=entry[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
-        <p><a type="button" class="btn btn-primary btn-sm" href="<%=entry[:add_to_cart]%>" target="_blank">
-               <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
-        </a></p>
+        <% if entry[:walmart_price].class==Float %>
+            <%= number_to_currency(entry[:walmart_price]) %>
+            <a href=<%=entry[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+            <p>
+              <a type="button" class="btn btn-primary btn-sm" href="<%=entry[:add_to_cart]%>" target="_blank"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</a>
+            </p>
+        <% else %>
+            <%=entry[:walmart_price]%>
+        <% end %>
       </td>
       <td>
-        <%=number_to_currency(entry[:amazon_price])%>   <a href=<%=entry[:amazon_url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+        <% if entry[:amazon_price].class==Float %>
+            <%=number_to_currency(entry[:amazon_price]) %>
+            <a href=<%=entry[:amazon_url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+        <% else %> 
+            <%=entry[:amazon_price]%>
+        <% end %>
       </td>
   </tr>
 <%end%>

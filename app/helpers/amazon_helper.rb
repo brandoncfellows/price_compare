@@ -68,12 +68,15 @@ module AmazonHelper
             if item["ItemAttributes"]["ListPrice"].is_a?(Hash)
               array.push(item["ItemAttributes"]["ListPrice"]["Amount"].to_f)
             else
-              array.push()
+              array.push(0)
             end
           end 
         end
         best = array.each_with_index.min
         hash[:amazon_price] = best[0]/100
+        if hash[:amazon_price] == 0
+          hash[:amazon_price] = "Not Available"
+        end 
       else
         if data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["TotalNew"].to_i > 0
           hash[:amazon_price] = data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["LowestNewPrice"]["Amount"].to_f/100
