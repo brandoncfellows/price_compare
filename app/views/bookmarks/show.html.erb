@@ -20,20 +20,19 @@
         <td>
         <%=number_to_currency(@bookmark.walmart_price)%>   
         </td>
-        <% walmart_info = WalmartHelper.info(@bookmark.upc)%>
-        <td><%=number_to_currency(walmart_info[:walmart_price])%>    <a href=<%=walmart_info[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
-        <p><a type="button" class="btn btn-primary btn-sm" href="<%=walmart_info[:add_to_cart]%>" target="_blank">
+        <td><%=number_to_currency(@walmart_info[:walmart_price])%>    <a href=<%=@walmart_info[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+        <p><a type="button" class="btn btn-primary btn-sm" href="<%=@walmart_info[:add_to_cart]%>" target="_blank">
                <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
         </a></p>
         </td>
         <td>
         <%=number_to_currency(@bookmark.amazon_price)%>   
         </td>
-        <% amazon_info = AmazonHelper.info(@bookmark.upc) %>
-        <td><%=number_to_currency(amazon_info[:amazon_price])%>    <a href=<%=amazon_info[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+        <td><%=number_to_currency(@amazon_info[:amazon_price])%>    <a href=<%=@amazon_info[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
         </td>
         <td>
           <a href="/delete_bookmark/<%= @bookmark.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
         </td>
       </tr>
     </table>
+    

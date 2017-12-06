@@ -26,6 +26,8 @@ class BookmarksController < ApplicationController
 
   def show
     @bookmark = Bookmark.find(params[:id])
+    @amazon_info = AmazonHelper.info(@bookmark.upc)
+    @walmart_info = WalmartHelper.info(@bookmark.upc)
 
     render("bookmarks/show.html.erb")
   end
