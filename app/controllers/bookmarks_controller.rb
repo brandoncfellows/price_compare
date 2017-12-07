@@ -1,26 +1,8 @@
 class BookmarksController < ApplicationController
+  
   def index
 
   @bookmarks=current_user.bookmarks
-=begin    
-    walmart_array=[]
-    current_user.bookmarks.pluck(:upc).each do |upc|
-      walmart_array.push(WalmartHelper.info(upc))
-    end
-    
-    walmart_array.each do |item|
-    amazon=AmazonHelper.info(item[:upc])
-    item[:amazon_price]=amazon[:price]
-    item[:amazon_url]=amazon[:url]
-    if item[:amazon_price].class==String 
-      item[:discount]=0
-    else
-      item[:discount]=(item[:amazon_price]-item[:price])/item[:amazon_price]*100
-    end 
-  end
-=end
-
-
     render("bookmarks/index.html.erb")
   end
 
@@ -28,7 +10,10 @@ class BookmarksController < ApplicationController
     @bookmark = Bookmark.find(params[:id])
     @amazon_info = AmazonHelper.info(@bookmark.upc)
     @walmart_info = WalmartHelper.info(@bookmark.upc)
-
+    
+    @chart1 = [{:name => "Walmart", :data =>[[@bookmark.created_at.strftime("%F"),@bookmark.walmart_price],[Time.now.strftime("%F"),@walmart_info[:walmart_price]]]},{:name => "Amazon", :data =>[[@bookmark.created_at.strftime("%F"),@bookmark.amazon_price],[Time.now.strftime("%F"),@amazon_info[:amazon_price]]]}]
+ 
+ 
     render("bookmarks/show.html.erb")
   end
 

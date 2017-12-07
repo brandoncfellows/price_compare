@@ -6,33 +6,32 @@
 
 <div class="row">
   <div class="col-md-12">
-    <table class="table table-striped table-hover">
+    <table class="table">
       <tr>
         <th></th>
         <th>Image</th>
         <th>Product</th>
-        <th>Walmart Price</th>
-        <th>Amazon Price</th>
+        <th>Discount when Added</th>
+        <th>Date Created</th>
         <th>Actions</th>
       </tr>
 
       <% @bookmarks.each do |bookmark| %>
       <tr>
-        <td><a href="/bookmarks/<%=bookmark.id%>"><span class="glyphicon glyphicon-eye-open"></span></a></td>
+        <td style = "vertical-align: middle; text-align: center"><a href="/bookmarks/<%=bookmark.id%>" ><span class="glyphicon glyphicon-eye-open"></span><br>Open</a></td>
         <td><img src=<%=bookmark.image%> width=200px></td>
         <% bookmark.upc %>
         <td><%= bookmark.name %></td>
         <td>
-        <%=number_to_currency(bookmark.walmart_price)%>   <a href=<%=%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
-        <p><a type="button" class="btn btn-primary btn-sm" href="<%=bookmark.add_to_cart%>" target="_blank">
-               <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
-        </a></p>
+        <%=number_to_percentage((bookmark.amazon_price-bookmark.walmart_price)/bookmark.amazon_price*100, precision:0)%>
         </td>
         <td>
-        <%=number_to_currency(bookmark.amazon_price)%>   <a href=<%=%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+        <%=bookmark.created_at.strftime("%F")%>  
         </td>
         <td>
-          <a href="/delete_bookmark/<%= bookmark.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+          <a href="/delete_bookmark/<%= bookmark.id %>" class="btn btn-danger btn-sm" rel="nofollow">Delete</a>
+          <a type="button" class="btn btn-primary btn-sm" href="<%=bookmark.add_to_cart%>" target="_blank">
+               <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart </a>
         </td>
       </tr>
       <% end %>

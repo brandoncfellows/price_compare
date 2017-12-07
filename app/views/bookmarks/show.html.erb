@@ -1,9 +1,10 @@
+<div class="container">
 <br>
 <br>
 <br>
 <br>
 
-<table class="table table-striped table-hover">
+  <table class="table">
       <tr>
         <th>Image</th>
         <th>Product</th>
@@ -34,5 +35,11 @@
           <a href="/delete_bookmark/<%= @bookmark.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
         </td>
       </tr>
-    </table>
-    
+  </table>
+</div>
+
+<div align="middle"><%= line_chart @chart1, :width => "800px", :height => "200px" %></div>
+<br>
+<br>
+<br>
+
