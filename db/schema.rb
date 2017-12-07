@@ -11,13 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171122152651) do
+ActiveRecord::Schema.define(version: 20171202231014) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "upc"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image"
+    t.float    "amazon_price"
+    t.float    "walmart_price"
+    t.string   "name"
+    t.string   "add_to_cart"
   end
 
   create_table "users", force: :cascade do |t|

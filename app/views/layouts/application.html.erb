@@ -5,6 +5,18 @@
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/sandstone/bootstrap.min.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   
+  <style>
+    a {color:#365B82;}
+    a:hover {color: #29415F;}
+  </style>
+  
+  <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://raw.githubusercontent.com/frexy/svg-icon-webcomponent/master/build/iconwc.js"></script>
+  
+  
   <title>Price Compare</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -28,8 +40,8 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a href="/list">List</a></li>
-          <li><a href="/find">Search</a></li>
+          <li><a href="/list/1">Clearance Items</a></li>
+          <li><a href="/find">Product Search</a></li>
           <li><a href="/bookmarks">Watch List</a></li>
         </ul>
 

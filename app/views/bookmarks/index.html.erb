@@ -1,32 +1,41 @@
 <br>
 <br>
 <br>
-<div class="page-header">
-  <h1>
-    Watch List
-    <a href="/bookmarks/new" class="btn btn-lg btn-success">New Bookmark</a>
-  </h1>
-</div>
+
+<div class="container">
 
 <div class="row">
   <div class="col-md-12">
-    <table class="table table-striped table-hover">
+    <table class="table">
       <tr>
-        <th>User</th>
-        <th>Upc</th>
+        <th></th>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Discount when Added</th>
+        <th>Date Created</th>
         <th>Actions</th>
       </tr>
 
-      <% current_user.bookmarks.each do |bookmark| %>
+      <% @bookmarks.each do |bookmark| %>
       <tr>
-        <td><%= bookmark.user_id %></td>
-        <td><%= bookmark.upc %></td>
+        <td style = "vertical-align: middle; text-align: center"><a href="/bookmarks/<%=bookmark.id%>" ><span class="glyphicon glyphicon-eye-open"></span><br>Open</a></td>
+        <td><img src=<%=bookmark.image%> width=200px></td>
+        <% bookmark.upc %>
+        <td><%= bookmark.name %></td>
         <td>
-          <a href="/bookmarks/<%= bookmark.id %>/edit" class="btn btn-warning">Edit</a>
-          <a href="/delete_bookmark/<%= bookmark.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+        <%=number_to_percentage((bookmark.amazon_price-bookmark.walmart_price)/bookmark.amazon_price*100, precision:0)%>
+        </td>
+        <td>
+        <%=bookmark.created_at.strftime("%F")%>  
+        </td>
+        <td>
+          <a href="/delete_bookmark/<%= bookmark.id %>" class="btn btn-danger btn-sm" rel="nofollow">Delete</a>
+          <a type="button" class="btn btn-primary btn-sm" href="<%=bookmark.add_to_cart%>" target="_blank">
+               <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart </a>
         </td>
       </tr>
       <% end %>
     </table>
   </div>
+</div>
 </div>

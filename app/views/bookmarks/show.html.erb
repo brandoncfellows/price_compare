@@ -1,28 +1,45 @@
-<div class="page-header">
-  <h3>Bookmark #<%= @bookmark.id %></h3>
+<div class="container">
+<br>
+<br>
+<br>
+<br>
+
+  <table class="table">
+      <tr>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Bookmarked Walmart Price</th>
+        <th>Currency Walmart Price</th>
+        <th>Bookmarked Amazon Price</th>
+        <th>Current Amazon Price</th>
+        <th>Actions</th>
+      </tr>
+      
+      <tr>
+        <td><img src=<%=@bookmark.image%> width=200px></td>
+        <td><%= @bookmark.name %></td>
+        <td>
+        <%=number_to_currency(@bookmark.walmart_price)%>   
+        </td>
+        <td><%=number_to_currency(@walmart_info[:walmart_price])%>    <a href=<%=@walmart_info[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+        <p><a type="button" class="btn btn-primary btn-sm" href="<%=@walmart_info[:add_to_cart]%>" target="_blank">
+               <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
+        </a></p>
+        </td>
+        <td>
+        <%=number_to_currency(@bookmark.amazon_price)%>   
+        </td>
+        <td><%=number_to_currency(@amazon_info[:amazon_price])%>    <a href=<%=@amazon_info[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+        </td>
+        <td>
+          <a href="/delete_bookmark/<%= @bookmark.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+        </td>
+      </tr>
+  </table>
 </div>
 
-<div class="row">
-  <div class="col-md-12 mb-2">
-    <dl class="dl-horizontal">
-      <dt>User</dt>
-      <dd><%= @bookmark.user_id %></dd>
+<div align="middle"><%= line_chart @chart1, :width => "800px", :height => "200px" %></div>
+<br>
+<br>
+<br>
 
-      <dt>Upc</dt>
-      <dd><%= @bookmark.upc %></dd>
-
-    </dl>
-
-    <div class="btn-group btn-group-justified">
-      <a href="/bookmarks" class="btn btn-primary">
-        Back
-      </a>
-      <a href="/bookmarks/<%= @bookmark.id %>/edit" class="btn btn-warning">
-        Edit
-      </a>
-      <a href="/delete_bookmark/<%= @bookmark.id %>" class="btn btn-danger" rel="nofollow">
-        Delete
-      </a>
-    </div>
-  </div>
-</div>
