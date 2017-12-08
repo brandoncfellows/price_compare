@@ -1,45 +1,61 @@
 <div class="container">
-<br>
-<br>
-<br>
-<br>
+<div class="row">
+  <div class="col-md-12">
 
   <table class="table">
       <tr>
         <th>Image</th>
-        <th>Product</th>
-        <th>Bookmarked Walmart Price</th>
-        <th>Currency Walmart Price</th>
-        <th>Bookmarked Amazon Price</th>
-        <th>Current Amazon Price</th>
+        <th width=300px>Product</th>
+        <th>Last Updated</th>
+        <th>Discount</th>
+        <th>Walmart Price</th>
+        <th>Amazon Price</th>
         <th>Actions</th>
       </tr>
       
       <tr>
-        <td><img src=<%=@bookmark.image%> width=200px></td>
-        <td><%= @bookmark.name %></td>
+        <td><img src=<%=@bookmark.product.image%> width=200px></td>
+        <td><%= @bookmark.product.name %></td>
         <td>
-        <%=number_to_currency(@bookmark.walmart_price)%>   
+          <%= time_ago_in_words(@bookmark.product.prices.last.created_at)%>
+          <form action = "/update_price">
+              <input type="hidden" id="id" name="id" class="form-control" value="<%= @bookmark.product.id%>">
+              <button class="btn btn-primary btn-sm">
+                Update Prices
+              </button>
+          </form>
         </td>
-        <td><%=number_to_currency(@walmart_info[:walmart_price])%>    <a href=<%=@walmart_info[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
-        <p><a type="button" class="btn btn-primary btn-sm" href="<%=@walmart_info[:add_to_cart]%>" target="_blank">
-               <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
-        </a></p>
+        <td><%=number_to_percentage(@discount, precision: 0)%></td>
+        <td>
+        <%=number_to_currency(@bookmark.product.prices.last.walmart)%>   <a href=<%=@bookmark.product.walmart_url%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
+            <% if WalmartHelper.info(@bookmark.product.upc)[:stock]=="Not available" %>
+            <p><span class="badge" style="background-color:red">Out of Stock</span></p>
+            <% end %>
         </td>
         <td>
-        <%=number_to_currency(@bookmark.amazon_price)%>   
+        <%=number_to_currency(@bookmark.product.prices.last.amazon)%>   <a href=<%=@bookmark.product.amazon_url%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
         </td>
-        <td><%=number_to_currency(@amazon_info[:amazon_price])%>    <a href=<%=@amazon_info[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
         </td>
         <td>
-          <a href="/delete_bookmark/<%= @bookmark.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+          <a style="display:inline-block"href="/delete_bookmark/<%= @bookmark.id %>" class="btn btn-danger btn-sm" rel="nofollow"><span class="glyphicon glyphicon-trash"></a>
+          <div style="display:inline-block">
+            <form action = "/add">
+              <input type="hidden" id="id" name="id" class="form-control" value="<%= @bookmark.id%>">
+              <button class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+              </button>
+            </form>
+          </div>
         </td>
       </tr>
   </table>
-</div>
 
-<div align="middle"><%= line_chart @chart1, :width => "800px", :height => "200px" %></div>
+
+<div align="middle"><%= line_chart @chart, :width => "800px", :height => "200px" %></div>
 <br>
 <br>
 <br>
+</div>
+</div>
+</div>
 

@@ -1,29 +1,25 @@
-<br>
-<br>
-<br>
-<br>
 <div class="container">
-<div class="row">
-  <div class="col-md-12">
-    <form action="/compare">
-      <!-- Hidden input for authenticity token to protect from forgery -->
-      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+  <div class="row">
+    <div class="col-md-12">
+      <br>
+      <form action="/compare">
+        <!-- Hidden input for authenticity token to protect from forgery -->
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
-      <!-- Label and input for user_id -->
-      <div class="form-group">
-        <label for="id" class="control-label">
-          Search: 
-        </label>
+        <!-- Label and input for user_id -->
+        <div class="form-group">
+          <label for="id" class="control-label">
+            Search: 
+          </label>
 
         <input type="text" id="id" name="id" placeholder="Search Terms" class="form-control">
-      </div>
+        </div>
 
-      <button class="btn btn-primary">
-        Search
-      </button>
+        <button class="btn btn-primary">
+          Search
+        </button>
 
-    </form>
+      </form>
+    </div>
   </div>
-</div>
-
 </div>

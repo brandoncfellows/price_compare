@@ -11,18 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171202231014) do
+ActiveRecord::Schema.define(version: 20171208033352) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "upc"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "image"
-    t.float    "amazon_price"
-    t.float    "walmart_price"
+    t.integer  "product_id"
+    t.integer  "cart"
+  end
+
+  create_table "prices", force: :cascade do |t|
+    t.float    "walmart"
+    t.float    "amazon"
+    t.integer  "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products", force: :cascade do |t|
     t.string   "name"
-    t.string   "add_to_cart"
+    t.string   "upc"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "amazon_url"
+    t.string   "walmart_url"
+    t.string   "image"
   end
 
   create_table "users", force: :cascade do |t|

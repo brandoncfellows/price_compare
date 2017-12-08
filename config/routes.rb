@@ -10,8 +10,10 @@ Rails.application.routes.draw do
   get "/bookmarks/:id", :controller => "bookmarks", :action => "show"
 
   # UPDATE
-  get "/bookmarks/:id/edit", :controller => "bookmarks", :action => "edit"
-  post "/update_bookmark/:id", :controller => "bookmarks", :action => "update"
+  get "/delete", :controller => "bookmarks", :action => "delete"
+  get "/add", :controller => "bookmarks", :action => "add"
+  get "/cart", :controller => "bookmarks", :action => "cart"
+  get "/update_price", :controller => "bookmarks", :action => "update"
 
   # DELETE
   get "/delete_bookmark/:id", :controller => "bookmarks", :action => "destroy"

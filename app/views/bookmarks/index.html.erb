@@ -1,37 +1,35 @@
-<br>
-<br>
-<br>
-
 <div class="container">
-
 <div class="row">
   <div class="col-md-12">
     <table class="table">
       <tr>
-        <th></th>
         <th>Image</th>
         <th>Product</th>
-        <th>Discount when Added</th>
-        <th>Date Created</th>
+        <th>Discount</th>
         <th>Actions</th>
       </tr>
-
-      <% @bookmarks.each do |bookmark| %>
+      <% current_user.bookmarks.each do |bookmark| %>
       <tr>
-        <td style = "vertical-align: middle; text-align: center"><a href="/bookmarks/<%=bookmark.id%>" ><span class="glyphicon glyphicon-eye-open"></span><br>Open</a></td>
-        <td><img src=<%=bookmark.image%> width=200px></td>
-        <% bookmark.upc %>
-        <td><%= bookmark.name %></td>
+        <td><img src=<%=bookmark.product.image%> width=200px></td>
+        <% bookmark.product.upc %>
+        <td><%= bookmark.product.name %></td>
         <td>
-        <%=number_to_percentage((bookmark.amazon_price-bookmark.walmart_price)/bookmark.amazon_price*100, precision:0)%>
+        <%=number_to_percentage((bookmark.product.prices.last.amazon-bookmark.product.prices.last.walmart)/bookmark.product.prices.last.amazon*100, precision:0)%>
+        <% if WalmartHelper.info(bookmark.product.upc)[:stock]=="Not available" %>
+          <p><span class="badge" style="background-color:red">Out of Stock</span></p>
+        <% end %>
         </td>
         <td>
-        <%=bookmark.created_at.strftime("%F")%>  
-        </td>
-        <td>
-          <a href="/delete_bookmark/<%= bookmark.id %>" class="btn btn-danger btn-sm" rel="nofollow">Delete</a>
-          <a type="button" class="btn btn-primary btn-sm" href="<%=bookmark.add_to_cart%>" target="_blank">
-               <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart </a>
+          <a href="/delete_bookmark/<%= bookmark.id %>" class="btn btn-danger btn-sm" rel="nofollow"><span class="glyphicon glyphicon-trash"></span></a>
+          <a type="button" class="btn btn-primary btn-sm" href="/bookmarks/<%=bookmark.id%>"><span class="glyphicon glyphicon-folder-open"></span></a>
+          <div style = "display:inline-block">
+          <form action = "/add">
+              <input type="hidden" id="id" name="id" class="form-control" value="<%= bookmark.id%>">
+              <button class="btn btn-success btn-sm">
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+              </button>
+          </form>
+          </div>
         </td>
       </tr>
       <% end %>
