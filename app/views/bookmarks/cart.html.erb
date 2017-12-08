@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="row">
+  <div class="col-md-12">
+    <table class = "table">
+      <tr>
+          <th width=300px>
+              Product
+          </th>
+          <th>
+              Estimated Sales Price
+          </th>
+          <th>
+              Product Cost
+          </th>
+          <th>
+          </th>
+      </tr>
+      <% revenue=0 %>
+      <% cost=0 %>
+      <% current_user.bookmarks.where(:cart=>1).each do |bookmark|%>
+      <tr>
+        <td>
+          <%=bookmark.product.name%>
+        </td>      
+        <td>
+          <%=number_to_currency(bookmark.product.prices.last.amazon)%>
+          <% cost=cost+bookmark.product.prices.last.walmart %>
+        </td>
+        <td>
+          <%=number_to_currency(bookmark.product.prices.last.walmart)%>
+          <% revenue=revenue+bookmark.product.prices.last.amazon %>
+        </td>
+        <td>
+            <div style= "display:inline-block">
+            <form action = "/delete">
+              <input type="hidden" id="id" name="id" class="form-control" value="<%= bookmark.id %>">
+              <button class="btn btn-danger btn-sm">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </form>
+            </div>
+            <div style= "display:inline-block">
+            <a type="button" class="btn btn-primary btn-sm"href="<%=WalmartHelper.info(bookmark.product.upc)[:add_to_cart]%>" target="_blank">
+                Order From Walmart
+             </a>
+             </div>
+        </td>
+      </tr>
+      <%end%>
+      <tr><th></th><th></th><th></th><th></th></tr>
+      <tr>
+          <td>
+              Total Revenue
+          </td>
+          <td><%= number_to_currency(revenue)%></td>
+          <td ></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>
+              Total Cost
+          </td>
+          <td></td>
+          <td ><%= number_to_currency(cost)%></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>
+              Estimated Fees
+          </td>
+          <td></td>
+          <td ><%= number_to_currency(revenue*0.15)%></td>
+          <td></td>
+      </tr>
+      <tr>
+          <th>
+              Total Estimated Profit
+          </th>
+          <th><%= number_to_currency(revenue*0.85-cost)%></th>
+          <th></th>
+          <th></th>
+      </tr>
+    </table>
+</div>
+</div>
+</div>

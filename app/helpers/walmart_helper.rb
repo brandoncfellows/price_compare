@@ -1,33 +1,35 @@
 module WalmartHelper
     
   def self.info(query)
-    api_key = "5mgg97myhj4gms5g7dtnhw4m"
+    api_key = "y4jk6bwf8ytkdms3a4z5jc3p"
     require "open-uri"
     hash={}
     
     data = JSON.parse(open("http://api.walmartlabs.com/v1/search?apiKey=#{api_key}&query=#{query}").read)
     
     if data["message"]=="Results not found!"
-      hash[:walmart_price]= "Not Available"
+      hash[:price]= "Not Available"
       hash[:image]= "Not Available"
       hash[:url]= "Not Available"
       hash[:add_to_cart] = "Not Available"
       hash[:upc] = "Not Avaialble"
       hash[:name] = "Not Available"
+      hash[:stock] = "Not Available"
     
     else
-      hash[:walmart_price]= data["items"][0]["salePrice"].to_f
+      hash[:price]= data["items"][0]["salePrice"].to_f
       hash[:image]= data["items"][0]["largeImage"]
       hash[:url]= data["items"][0]["productUrl"]
       hash[:add_to_cart] = data["items"][0]["addToCartUrl"]
       hash[:upc] = data["items"][0]["upc"]
       hash[:name] = data["items"][0]["name"]
+      hash[:stock] = data["items"][0]["stock"]
     end  
     return hash
   end
 
   def self.search(query)
-    api_key = "5mgg97myhj4gms5g7dtnhw4m"
+    api_key = "y4jk6bwf8ytkdms3a4z5jc3p"
     require "open-uri"
     array=[]
     i=0
@@ -35,12 +37,13 @@ module WalmartHelper
     data = JSON.parse(open("http://api.walmartlabs.com/v1/search?apiKey=#{api_key}&query=#{query}").read)
     data["items"].each do |item|
       array.push({})
-      array[i][:walmart_price]= item["salePrice"].to_f
+      array[i][:price]= item["salePrice"].to_f
       array[i][:image]= item["largeImage"]
       array[i][:url]= item["productUrl"]
       array[i][:add_to_cart] = item["addToCartUrl"]
       array[i][:upc] = item["upc"]
       array[i][:name] = item["name"]
+      array[i][:stock] = item["stock"]
       i=i+1
     end
     return array

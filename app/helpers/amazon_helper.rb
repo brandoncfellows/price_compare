@@ -11,7 +11,7 @@ module AmazonHelper
     require 'ostruct'
 
     # Your Secret Key corresponding to the above ID, as taken from the Your Account page
-    secret_key = "VpEXPC+cd1zQ5jHd+yragEXeI9K2v5AFTCO/MTnD"
+    secret_key = "ZdaDWbN8yfHhsIcy/7XshxbKXn5voSCwLMyN5jnK"
 
     # The region you are interested in
     endpoint = "webservices.amazon.com"
@@ -21,7 +21,7 @@ module AmazonHelper
     params = {
     "Service" => "AWSECommerceService",
     "Operation" => "ItemLookup",
-    "AWSAccessKeyId" => "AKIAIMHAOMM6TBWMUYKA",
+    "AWSAccessKeyId" => "AKIAJK3SKF5T44UL7O3A",
     "AssociateTag" => "brandoncfello-20",
     "ItemId" => query,
     "IdType" => "UPC",
@@ -52,7 +52,7 @@ module AmazonHelper
     array=[]
 
     if data["ItemLookupResponse"]["Items"]["Request"].key?("Errors")
-      hash[:amazon_price]="Not Available"
+      hash[:price]="Not Available"
       hash[:url]= "Not Available"
       hash[:title]= "Not Available"
     
@@ -73,18 +73,18 @@ module AmazonHelper
           end 
         end
         best = array.each_with_index.min
-        hash[:amazon_price] = best[0]/100
-        if hash[:amazon_price] == 0
-          hash[:amazon_price] = "Not Available"
+        hash[:price] = best[0]/100
+        if hash[:price] == 0
+          hash[:price] = "Not Available"
         end 
       else
         if data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["TotalNew"].to_i > 0
-          hash[:amazon_price] = data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["LowestNewPrice"]["Amount"].to_f/100
+          hash[:price] = data["ItemLookupResponse"]["Items"]["Item"]["OfferSummary"]["LowestNewPrice"]["Amount"].to_f/100
         else 
           if data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"].is_a?(Hash)
-            hash[:amazon_price] = data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"]["Amount"].to_f/100
+            hash[:price] = data["ItemLookupResponse"]["Items"]["Item"]["ItemAttributes"]["ListPrice"]["Amount"].to_f/100
           else
-            hash[:amazon_price] = "Not Available"
+            hash[:price] = "Not Available"
           end
         end
       end

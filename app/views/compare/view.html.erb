@@ -1,40 +1,20 @@
-<br>
-<br>
-<br>
 <div class="container">
 <div class="row">
   <div class="col-md-12" >
-    <table class="table table-striped" >
+    <table class="table" >
   <tr>
     <th>Image</th>
-    <th width=400px>Product</th>
+    <th>Product</th>
     <th>Discount</th>    
     <th>Walmart Price</th>
     <th>Amazon Price</th>
+    <th>Actions</th>
   </tr>
   <%@walmart_array.each do |entry|%>
   <tr>
       <td><img src=<%=entry[:image]%> width=200px></td>
       <td>
         <%=entry[:name]%>
-      <div class="row">
-        <div class="col-md-12">
-          <form action="/create_bookmark" method="post">
-             <!-- Hidden input for authenticity token to protect from forgery -->
-             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-             <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
-             <input type="hidden" id="upc" name="upc" placeholder="Upc" class="form-control" value="<%= entry[:upc] %>">
-             <input type="hidden" id="image" name="image" placeholder="Image URL" class="form-control" value="<%= entry[:image] %>">
-             <input type="hidden" id="name" name="name" placeholder="Name" class="form-control" value="<%= entry[:name] %>">
-             <input type="hidden" id="walmart_price" name="walmart_price" placeholder="Walmart Price" class="form-control" value="<%= entry[:walmart_price] %>">
-             <input type="hidden" id="amazon_price" name="amazon_price" placeholder="Amazon Price" class="form-control" value="<%= entry[:amazon_price] %>">
-             <input type="hidden" id="add_to_cart" name="add_to_cart" placeholder="Add To Cart" class="form-control" value="<%= entry[:add_to_cart] %>">
-             <button class="btn btn-primary btn-sm">
-               Add to Watch List
-             </button>
-           </form>
-          </div>
-        </div>
       </td>
       <td>
         <%= 
@@ -46,14 +26,14 @@
         %>
       </td>      
       <td>
-        <% if entry[:walmart_price].class==Float %>
-            <%= number_to_currency(entry[:walmart_price]) %>
+        <% if entry[:price].class==Float %>
+            <%= number_to_currency(entry[:price]) %>
             <a href=<%=entry[:url]%> target="_blank"><span class="glyphicon glyphicon-eye-open"></span></a>
-            <p>
-              <a type="button" class="btn btn-primary btn-sm" href="<%=entry[:add_to_cart]%>" target="_blank"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</a>
-            </p>
+            <% if entry[:stock]=="Not available" %>
+            <p><span class="badge" style="background-color:red">Out of Stock</span></p>
+            <% end %>
         <% else %>
-            <%=entry[:walmart_price]%>
+            <%=entry[:price]%>
         <% end %>
       </td>
       <td>
@@ -63,6 +43,24 @@
         <% else %> 
             <%=entry[:amazon_price]%>
         <% end %>
+      </td>
+      <td>
+          <form action="/create_bookmark" method="post">
+             <!-- Hidden input for authenticity token to protect from forgery -->
+             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+             <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
+             <input type="hidden" id="upc" name="upc" placeholder="Upc" class="form-control" value="<%= entry[:upc] %>">
+             <input type="hidden" id="image" name="image" placeholder="Image URL" class="form-control" value="<%= entry[:image] %>">
+             <input type="hidden" id="name" name="name" placeholder="Name" class="form-control" value="<%= entry[:name] %>">
+             <input type="hidden" id="price" name="price" placeholder="Walmart Price" class="form-control" value="<%= entry[:price] %>">
+             <input type="hidden" id="amazon_price" name="amazon_price" placeholder="Amazon Price" class="form-control" value="<%= entry[:amazon_price] %>">
+             <input type="hidden" id="add_to_cart" name="add_to_cart" placeholder="Add To Cart" class="form-control" value="<%= entry[:add_to_cart] %>">
+             <input type="hidden" id="url" name="url" placeholder="Walmart URL" class="form-control" value="<%= entry[:url] %>">
+             <input type="hidden" id="amazon_url" name="amazon_url" placeholder="Amazon URL" class="form-control" value="<%= entry[:amazon_url] %>">
+             <button class="btn btn-primary btn-sm">
+               <span class="glyphicon glyphicon-plus"></span>
+             </button>
+           </form>
       </td>
   </tr>
 <%end%>
